@@ -15,7 +15,7 @@ services:
       - MYSQL_DATABASE=$DATABASE_NAME
 
   app:
-    image: ajyotirmay/tribe:latest
+    image: tribeframework/tribe:latest
     container_name: $APP_NAME-tribe
     restart: 'no'
     working_dir: /var/www/
