@@ -29,4 +29,3 @@ services:
       - ./tribe/config:/var/www/config
       - ./tribe/custom:/var/www/custom
       - ./tribe/uploads:/var/www/uploads
-      - ./tribe/applications:/var/www/applications
