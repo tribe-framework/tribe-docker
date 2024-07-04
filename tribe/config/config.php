@@ -11,31 +11,35 @@ date_default_timezone_set($_ENV['DEFAULT_TIMEZONE']);
 
 // set cors headers in PHP server
 if ($_ENV['ALLOW_CROSS_ORIGIN'] === 'true') {
+    if ($_ENV['ENV'] == 'prod') {
+        $allowed_origins = [
+            $_ENV['WEB_URL'],
+            $_ENV['JUNCTION_URL'],
+            $_ENV['DOCKER_INTERNAL_TRIBE_URL'],
+            $_ENV['DOCKER_INTERNAL_JUNCTION_URL'],
+            $_ENV['DOCKER_EXTERNAL_TRIBE_URL'],
+            $_ENV['DOCKER_EXTERNAL_JUNCTION_URL'],
+        ];
 
-	if ($_ENV['ENV'] == 'prod') {
-	    $allowed_origins = [
-	        'http://localhost:4200',
-	        'http://localhost:4201',
-	    ];
 
-		if (array_key_exists('HTTP_ORIGIN', $_SERVER)) {
-			$_origin = $_SERVER["HTTP_ORIGIN"];
-		} else if (array_key_exists('HTTP_HOST', $_SERVER)) {
-			$_origin = $_SERVER["HTTP_HOST"];
-		} else {
-			$_origin = "";
-		}
+        if (array_key_exists('HTTP_ORIGIN', $_SERVER)) {
+            $_origin = $_SERVER["HTTP_ORIGIN"];
+        } else if (array_key_exists('HTTP_HOST', $_SERVER)) {
+            $_origin = $_SERVER["HTTP_HOST"];
+        } else {
+            $_origin = "";
+        }
 
-		header("Access-Control-Allow-Origin: $_origin");
-	    header("Access-Control-Allow-Headers: *");
-	    header("Access-Control-Allow-Methods: *");
-	}
-	//in dev environment, allowing cross origin *
-	else {
-		header("Access-Control-Allow-Origin: *");
-		header("Access-Control-Allow-Headers: *");
-		header("Access-Control-Allow-Methods: *");
-	}
+        header("Access-Control-Allow-Origin: $_origin");
+        header("Access-Control-Allow-Headers: *");
+        header("Access-Control-Allow-Methods: *");
+    }
+    //in dev environment, allowing cross origin *
+    else {
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Headers: *");
+        header("Access-Control-Allow-Methods: *");
+    }
 }
 
 define('TRIBE_ROOT', dirname(__DIR__, 1));
