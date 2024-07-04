@@ -23,7 +23,7 @@ services:
       - db
     ports:
       - "$APP_PORT:80"
-      - "$JUNCTION_PORT:80"
+      - "$JUNCTION_PORT:81"
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - ./tribe/applications:/var/www/applications
