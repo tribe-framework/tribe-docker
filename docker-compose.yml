@@ -1,24 +1,22 @@
 services:
   db:
     image: mysql:8.4.0
-    container_name: $APP_NAME-db
+    container_name: $APP_UID-db
     restart: 'no'
     user: root
     volumes:
       - ./mysql/db:/var/lib/mysql
       - ./mysql/mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
       - ./tribe:/var/www
-    ports:
-      - "$DOCKER_DB_PORT:3306"
     environment:
-      - MYSQL_USER=$DATABASE_USER
-      - MYSQL_PASSWORD=$DATABASE_PASS
-      - MYSQL_ROOT_PASSWORD=$DATABASE_PASS
-      - MYSQL_DATABASE=$DATABASE_NAME
+      - MYSQL_USER=$DB_USER
+      - MYSQL_PASSWORD=$DB_PASS
+      - MYSQL_ROOT_PASSWORD=$DB_PASS
+      - MYSQL_DATABASE=$DB_NAME
 
-  app:
+  tribe:
     image: tribeframework/tribe:latest
-    container_name: $APP_NAME-tribe
+    container_name: $APP_UID-tribe
     restart: 'no'
     working_dir: /var/www/
     depends_on:
