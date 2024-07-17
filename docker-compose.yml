@@ -2,7 +2,7 @@ services:
   db:
     image: mysql:8.4.0
     container_name: $APP_UID-db
-    restart: 'no'
+    restart: 'unless-stopped'
     user: root
     volumes:
       - ./mysql/db:/var/lib/mysql
@@ -17,7 +17,7 @@ services:
   tribe:
     image: tribeframework/tribe:latest
     container_name: $APP_UID-tribe
-    restart: 'no'
+    restart: 'unless-stopped'
     working_dir: /var/www/
     depends_on:
       - db
