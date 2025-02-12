@@ -26,7 +26,7 @@ if [[ $ACTION == "2" ]]; then
 fi
 
 if [[ $ACTION == "3" ]]; then
-    rm -rf .git build.sh .shell_env
+    rm -rf ./.git ./run ./.shell_env
     exit
 fi
 
@@ -116,4 +116,4 @@ echo "DB_NAME=${DB_NAME}" >> .shell_vars
 chmod 400 .shell_vars
 
 echo ""
-echo "All Done!!. Re-run the script with 'deploy' option"
+echo "All Done!"
