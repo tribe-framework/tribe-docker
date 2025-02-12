@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+GREEN="\e[32m"
+RESET="\e[0m"
+
 ## deploy the app
 if [[ $1 == "deploy"]]; then
     chown -R www-data: *
@@ -79,3 +82,5 @@ sed -i "s|\$TRIBE_API_SECRET|$TRIBE_API_SECRET|g" tribe/.env
 
 # PHPmyadmin config update
 sed -i "s|\$DB_HOST|$DB_HOST|g" tribe/config.inc.php
+
+echo "${GREEN}All done. Re-run the script with 'deploy' option${RESET}"
