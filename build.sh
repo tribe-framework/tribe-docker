@@ -1,5 +1,22 @@
 #!/usr/bin/env bash
 
+## deploy the app
+if [[ $1 == "deploy"]]; then
+    chown -R www-data: *
+
+    docker compose up -d
+
+    sleep 30
+
+    docker exec -i {$DB_HOST} mysql -u{$DB_USER} -p{$DB_PASS} {$DB_NAME} < {$APP_PATH}/tribe/install/db.sql
+    while [ $? -eq 1 ]; do
+        docker exec -i {$DB_HOST} mysql -u{$DB_USER} -p{$DB_PASS} {$DB_NAME} < {$APP_PATH}/tribe/install/db.sql
+        sleep 2
+    done
+
+    exit
+fi
+
 read -p "Application name: " APP_NAME
 read -p "Application unique ID (without spaces): " APP_UID
 
@@ -62,17 +79,3 @@ sed -i "s|\$TRIBE_API_SECRET|$TRIBE_API_SECRET|g" tribe/.env
 
 # PHPmyadmin config update
 sed -i "s|\$DB_HOST|$DB_HOST|g" tribe/config.inc.php
-
-## change permissions and start services
-
-chown -R www-data: *
-
-docker compose up -d
-
-sleep 30
-
-docker exec -i {$DB_HOST} mysql -u{$DB_USER} -p{$DB_PASS} {$DB_NAME} < {$APP_PATH}/tribe/install/db.sql
-while [ $? -eq 1 ]; do
-    docker exec -i {$DB_HOST} mysql -u{$DB_USER} -p{$DB_PASS} {$DB_NAME} < {$APP_PATH}/tribe/install/db.sql
-    sleep 2
-done
