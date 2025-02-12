@@ -22,12 +22,13 @@ services:
     depends_on:
       - db
     ports:
-      - "$TRIBE_PORT:80"
-      - "$JUNCTION_PORT:81"
+      - "$TRIBE_PORT:80" # tribe
+      - "$JUNCTION_PORT:81" # junction
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - ./tribe/applications:/var/www/applications
       - ./tribe/.env:/var/www/.env
+      - ./tribe/api:/var/www/api
       - ./tribe/config:/var/www/config
       - ./tribe/custom:/var/www/custom
       - ./tribe/uploads:/var/www/uploads

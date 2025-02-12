@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-GREEN="\e[32m"
-RESET="\e[0m"
-
 ## deploy the app
 if [[ $1 == "deploy" ]]; then
     chown -R www-data: *
@@ -11,9 +8,11 @@ if [[ $1 == "deploy" ]]; then
 
     sleep 30
 
-    docker exec -i {$DB_HOST} mysql -u{$DB_USER} -p{$DB_PASS} {$DB_NAME} < {$APP_PATH}/tribe/install/db.sql
+    source .shell_vars
+
+    docker exec -i {$DB_HOST} mysql -u{$DB_USER} -p{$DB_PASS} {$DB_NAME} < ./tribe/install/db.sql
     while [ $? -eq 1 ]; do
-        docker exec -i {$DB_HOST} mysql -u{$DB_USER} -p{$DB_PASS} {$DB_NAME} < {$APP_PATH}/tribe/install/db.sql
+        docker exec -i {$DB_HOST} mysql -u{$DB_USER} -p{$DB_PASS} {$DB_NAME} < ./tribe/install/db.sql
         sleep 2
     done
 
@@ -51,13 +50,16 @@ JUNCTION_URL="junction.$APP_DOMAIN"
 if echo "$ENABLE_SSL" | grep -iq "^y$"; then
     WEB_URL="https://$WEB_BARE_URL"
     JUNCTION_URL="https://$JUNCTION_URL"
+    APP_URL="https://$APP_DOMAIN"
 else
     WEB_BARE_URL="http://$WEB_BARE_URL"
     JUNCTION_URL="http://$JUNCTION_URL"
+    APP_URL="http://$APP_URL"
 fi
 
 ## Start updating files with user input
 # docker-compose.yml
+echo ""
 echo "Updating docker-compose.yml"
 sed -i "s|\$APP_UID|$APP_UID|g" docker-compose.yml
 sed -i "s|\$DB_USER|$DB_USER|g" docker-compose.yml
@@ -65,13 +67,16 @@ sed -i "s|\$DB_PASS|$DB_PASS|g" docker-compose.yml
 sed -i "s|\$DB_NAME|$DB_NAME|g" docker-compose.yml
 sed -i "s|\$TRIBE_PORT|$TRIBE_PORT|g" docker-compose.yml
 sed -i "s|\$JUNCTION_PORT|$JUNCTION_PORT|g" docker-compose.yml
+echo "Done"
 
 # .env file
+echo""
 echo "Setting up environment for tribe"
 cp tribe/.env.sample tribe/.env
 sed -i "s|\$APP_NAME|$APP_NAME|g" tribe/.env
 sed -i "s|\$JUNCTION_PASS|$JUNCTION_PASS|g" tribe/.env
 sed -i "s|\$WEB_BARE_URL|$WEB_BARE_URL|g" tribe/.env
+sed -i "s|\$APP_URL|$APP_URL|g" tribe/.env
 sed -i "s|\$WEB_URL|$WEB_URL|g" tribe/.env
 sed -i "s|\$JUNCTION_URL|$JUNCTION_URL|g" tribe/.env
 sed -i "s|\$APP_UID|$APP_UID|g" tribe/.env
@@ -85,6 +90,13 @@ sed -i "s|\$TRIBE_API_SECRET|$TRIBE_API_SECRET|g" tribe/.env
 
 # PHPmyadmin config update
 sed -i "s|\$DB_HOST|$DB_HOST|g" tribe/config.inc.php
+echo "Done"
+
+echo "DB_HOST=${DB_HOST}" >  .shell_vars
+echo "DB_USER=${DB_USER}" >> .shell_vars
+echo "DB_PASS=${DB_PASS}" >> .shell_vars
+echo "DB_NAME=${DB_NAME}" >> .shell_vars
+chmod 400 .shell_vars
 
 echo ""
-echo "${GREEN}All done. Re-run the script with 'deploy' option${RESET}"
+echo "All Done!!. Re-run the script with 'deploy' option"
