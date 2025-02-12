@@ -72,6 +72,7 @@ cp tribe/.env.sample tribe/.env
 sed -i "s|\$APP_NAME|$APP_NAME|g" tribe/.env
 sed -i "s|\$JUNCTION_PASS|$JUNCTION_PASS|g" tribe/.env
 sed -i "s|\$WEB_BARE_URL|$WEB_BARE_URL|g" tribe/.env
+sed -i "s|\$WEB_URL|$WEB_URL|g" tribe/.env
 sed -i "s|\$JUNCTION_URL|$JUNCTION_URL|g" tribe/.env
 sed -i "s|\$APP_UID|$APP_UID|g" tribe/.env
 sed -i "s|\$DOCKER_EXTERNAL_TRIBE_URL|$DOCKER_EXTERNAL_TRIBE_URL|g" tribe/.env
