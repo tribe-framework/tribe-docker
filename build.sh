@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
+echo "1. Build"
+echo "2. Deploy"
+echo "3. Cleanup"
+echo "4. Exit"
+read -p "Choose option 1-4: " ACTION
+
 ## deploy the app
-if [[ $1 == "deploy" ]]; then
+if [[ $ACTION == "2" ]]; then
     chown -R www-data: *
 
     docker compose up -d
@@ -19,6 +25,17 @@ if [[ $1 == "deploy" ]]; then
     exit
 fi
 
+if [[ $ACTION == "3" ]]; then
+    rm -rf .git build.sh .shell_env
+    exit
+fi
+
+if [[ $ACTION == "4" ]]; then
+    echo "Exiting..."
+    exit
+fi
+
+clear
 read -p "Application name: " APP_NAME
 read -p "Application unique ID (without spaces): " APP_UID
 
