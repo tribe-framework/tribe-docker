@@ -58,6 +58,7 @@ fi
 
 ## Start updating files with user input
 # docker-compose.yml
+echo "Updating docker-compose.yml"
 sed -i "s|\$APP_UID|$APP_UID|g" docker-compose.yml
 sed -i "s|\$DB_USER|$DB_USER|g" docker-compose.yml
 sed -i "s|\$DB_PASS|$DB_PASS|g" docker-compose.yml
@@ -66,6 +67,7 @@ sed -i "s|\$TRIBE_PORT|$TRIBE_PORT|g" docker-compose.yml
 sed -i "s|\$JUNCTION_PORT|$JUNCTION_PORT|g" docker-compose.yml
 
 # .env file
+echo "Setting up environment for tribe"
 cp tribe/.env.sample tribe/.env
 sed -i "s|\$APP_NAME|$APP_NAME|g" tribe/.env
 sed -i "s|\$JUNCTION_PASS|$JUNCTION_PASS|g" tribe/.env
@@ -83,4 +85,5 @@ sed -i "s|\$TRIBE_API_SECRET|$TRIBE_API_SECRET|g" tribe/.env
 # PHPmyadmin config update
 sed -i "s|\$DB_HOST|$DB_HOST|g" tribe/config.inc.php
 
+echo ""
 echo "${GREEN}All done. Re-run the script with 'deploy' option${RESET}"
