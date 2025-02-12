@@ -4,7 +4,7 @@ GREEN="\e[32m"
 RESET="\e[0m"
 
 ## deploy the app
-if [[ $1 == "deploy"]]; then
+if [[ $1 == "deploy" ]]; then
     chown -R www-data: *
 
     docker compose up -d
