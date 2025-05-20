@@ -5,9 +5,9 @@ services:
     restart: 'unless-stopped'
     user: root
     volumes:
-      - ./mysql/db:/var/lib/mysql
-      - ./mysql/mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
-      - ./tribe:/var/www
+      - ./.db:/var/lib/mysql
+      - ./config/mysql/mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
+      - ./:/var/www
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
@@ -30,11 +30,11 @@ services:
       - "$TRIBE_PORT:80" # tribe
       - "$JUNCTION_PORT:81" # junction
     volumes:
-      - ./nginx:/etc/nginx/conf.d
-      - ./tribe/applications:/var/www/applications
-      - ./tribe/.env:/var/www/.env
-      - ./tribe/api:/var/www/api
-      - ./tribe/config:/var/www/config
-      - ./tribe/custom:/var/www/custom
-      - ./tribe/uploads:/var/www/uploads
-      - ./tribe/config.inc.php:/var/www/phpmyadmin/config.inc.php
+      - ./config/nginx:/etc/nginx/conf.d
+      - ./applications:/var/www/applications
+      - ./.env:/var/www/.env
+      - ./api:/var/www/api
+      - ./config:/var/www/config
+      - ./custom:/var/www/custom
+      - ./uploads:/var/www/uploads
+      - ./config/phpmyadmin/config.inc.php:/var/www/phpmyadmin/config.inc.php
