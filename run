@@ -2,8 +2,7 @@
 
 echo "1. Build"
 echo "2. Deploy"
-echo "3. Cleanup"
-echo "4. Exit"
+echo "3. Exit"
 read -p "Choose option 1-4: " ACTION
 
 ## deploy the app
@@ -14,11 +13,11 @@ if [[ $ACTION == "2" ]]; then
 
     sleep 30
 
-    source .shell_vars
+    source .env
 
-    docker exec -i {$DB_HOST} mysql -u{$DB_USER} -p{$DB_PASS} {$DB_NAME} < ./tribe/install/db.sql
+    docker exec -i {$DB_HOST} mysql -u{$DB_USER} -p{$DB_PASS} {$DB_NAME} < ./install/db.sql
     while [ $? -eq 1 ]; do
-        docker exec -i {$DB_HOST} mysql -u{$DB_USER} -p{$DB_PASS} {$DB_NAME} < ./tribe/install/db.sql
+        docker exec -i {$DB_HOST} mysql -u{$DB_USER} -p{$DB_PASS} {$DB_NAME} < ./install/db.sql
         sleep 2
     done
 
@@ -26,11 +25,6 @@ if [[ $ACTION == "2" ]]; then
 fi
 
 if [[ $ACTION == "3" ]]; then
-    rm -rf ./.git ./run ./.shell_env
-    exit
-fi
-
-if [[ $ACTION == "4" ]]; then
     echo "Exiting..."
     exit
 fi
@@ -74,46 +68,27 @@ else
     APP_URL="http://$APP_URL"
 fi
 
-## Start updating files with user input
-# docker-compose.yml
-echo ""
-echo "Updating docker-compose.yml"
-sed -i "s|\$APP_UID|$APP_UID|g" docker-compose.yml
-sed -i "s|\$DB_USER|$DB_USER|g" docker-compose.yml
-sed -i "s|\$DB_PASS|$DB_PASS|g" docker-compose.yml
-sed -i "s|\$DB_NAME|$DB_NAME|g" docker-compose.yml
-sed -i "s|\$TRIBE_PORT|$TRIBE_PORT|g" docker-compose.yml
-sed -i "s|\$JUNCTION_PORT|$JUNCTION_PORT|g" docker-compose.yml
-echo "Done"
-
 # .env file
-echo""
+echo ""
 echo "Setting up environment for tribe"
-cp tribe/.env.sample tribe/.env
-sed -i "s|\$APP_NAME|$APP_NAME|g" tribe/.env
-sed -i "s|\$JUNCTION_PASS|$JUNCTION_PASS|g" tribe/.env
-sed -i "s|\$WEB_BARE_URL|$WEB_BARE_URL|g" tribe/.env
-sed -i "s|\$APP_URL|$APP_URL|g" tribe/.env
-sed -i "s|\$WEB_URL|$WEB_URL|g" tribe/.env
-sed -i "s|\$JUNCTION_URL|$JUNCTION_URL|g" tribe/.env
-sed -i "s|\$APP_UID|$APP_UID|g" tribe/.env
-sed -i "s|\$DOCKER_EXTERNAL_TRIBE_URL|$DOCKER_EXTERNAL_TRIBE_URL|g" tribe/.env
-sed -i "s|\$DOCKER_EXTERNAL_JUNCTION_URL|$DOCKER_EXTERNAL_JUNCTION_URL|g" tribe/.env
-sed -i "s|\$DB_NAME|$DB_NAME|g" tribe/.env
-sed -i "s|\$DB_USER|$DB_USER|g" tribe/.env
-sed -i "s|\$DB_PASS|$DB_PASS|g" tribe/.env
-sed -i "s|\$DB_HOST|$DB_HOST|g" tribe/.env
-sed -i "s|\$TRIBE_API_SECRET|$TRIBE_API_SECRET|g" tribe/.env
+cp .env.sample .env
+sed -i "s|\$TRIBE_PORT|$TRIBE_PORT|g" .env
+sed -i "s|\$JUNCTION_PORT|$JUNCTION_PORT|g" .env
+sed -i "s|\$APP_NAME|$APP_NAME|g" .env
+sed -i "s|\$JUNCTION_PASS|$JUNCTION_PASS|g" .env
+sed -i "s|\$WEB_BARE_URL|$WEB_BARE_URL|g" .env
+sed -i "s|\$APP_URL|$APP_URL|g" .env
+sed -i "s|\$WEB_URL|$WEB_URL|g" .env
+sed -i "s|\$JUNCTION_URL|$JUNCTION_URL|g" .env
+sed -i "s|\$APP_UID|$APP_UID|g" .env
+sed -i "s|\$DOCKER_EXTERNAL_TRIBE_URL|$DOCKER_EXTERNAL_TRIBE_URL|g" .env
+sed -i "s|\$DOCKER_EXTERNAL_JUNCTION_URL|$DOCKER_EXTERNAL_JUNCTION_URL|g" .env
+sed -i "s|\$DB_NAME|$DB_NAME|g" .env
+sed -i "s|\$DB_USER|$DB_USER|g" .env
+sed -i "s|\$DB_PASS|$DB_PASS|g" .env
+sed -i "s|\$DB_HOST|$DB_HOST|g" .env
+sed -i "s|\$TRIBE_API_SECRET|$TRIBE_API_SECRET|g" .env
 
 # PHPmyadmin config update
-sed -i "s|\$DB_HOST|$DB_HOST|g" tribe/config.inc.php
+sed -i "s|\$DB_HOST|$DB_HOST|g" config/phpmyadmin/config.inc.php
 echo "Done"
-
-echo "DB_HOST=${DB_HOST}" >  .shell_vars
-echo "DB_USER=${DB_USER}" >> .shell_vars
-echo "DB_PASS=${DB_PASS}" >> .shell_vars
-echo "DB_NAME=${DB_NAME}" >> .shell_vars
-chmod 400 .shell_vars
-
-echo ""
-echo "All Done!"
