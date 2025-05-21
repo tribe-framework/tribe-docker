@@ -5,16 +5,17 @@ This is a skeleton project for using official *tribe* image.
 
 ## 🚀 Installation
 1. Clone the repository:
-```sh
+```bash
 git clone https://github.com/tribe-framework/docker-tribe-template.git project_name
 cd project_name
-./build.sh
+./run
 ```
-And then fill in the form for the script to setup your environment. 
+And then fill in the form for the script to setup your environment.
 
 2. After setting up, deploy the app
-```sh
-./buld.sh deploy
+```bash
+./run
+# select option 2 to deploy
 ```
 
 **That's all. Enjoy!**
