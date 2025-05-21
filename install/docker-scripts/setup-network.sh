@@ -63,6 +63,3 @@ docker network create \
 # Export for Compose
 export COMPOSE_NETWORK_NAME=$NETWORK_NAME
 set_env_var "COMPOSE_NETWORK_NAME" "$NETWORK_NAME"
-
-# Run Compose
-docker compose up -d
