@@ -71,7 +71,7 @@ fi
 # .env file
 echo ""
 echo "Setting up environment for tribe"
-cp .env.sample .env
+cp .sample.env .env
 sed -i "s|\$TRIBE_PORT|$TRIBE_PORT|g" .env
 sed -i "s|\$JUNCTION_PORT|$JUNCTION_PORT|g" .env
 sed -i "s|\$APP_NAME|$APP_NAME|g" .env
