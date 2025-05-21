@@ -6,7 +6,7 @@ services:
     user: root
     volumes:
       - ./.db:/var/lib/mysql
-      - ./config/mysql/mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
+      # - ./config/mysql/mysqld.cnf:/etc/mysql/conf.d/mysqld.cnf
       - ./:/var/www
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
