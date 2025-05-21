@@ -91,4 +91,7 @@ sed -i "s|\$TRIBE_API_SECRET|$TRIBE_API_SECRET|g" .env
 
 # PHPmyadmin config update
 sed -i "s|\$DB_HOST|$DB_HOST|g" config/phpmyadmin/config.inc.php
+
+bash ./install/docker-scripts/setup-network.sh
+
 echo "Done"
