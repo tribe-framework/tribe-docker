@@ -50,19 +50,10 @@ if [[ -z "$FOUND_SUBNET" ]]; then
   exit 1
 fi
 
-# Create unique network name
-NETWORK_NAME="auto_net_$(date +%s%N | tail -c 6)"
-
-echo "✅ Allocating network $NETWORK_NAME with subnet $FOUND_SUBNET"
-
-# Create network
-docker network create \
-  --driver bridge \
-  --subnet "$FOUND_SUBNET" \
-  "$NETWORK_NAME"
+echo "✅ Allocating network subnet $FOUND_SUBNET"
 
 # Save network name for Compose
-set_env_var "COMPOSE_NETWORK_NAME" "$NETWORK_NAME"
+set_env_var "DOCKER_SUBNET" "$FOUND_SUBNET"
 
 # Run your Compose stack
 docker compose up -d

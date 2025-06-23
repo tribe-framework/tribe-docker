@@ -17,8 +17,6 @@ services:
       - MYSQL_PASSWORD=${DB_PASS}
       - MYSQL_ROOT_PASSWORD=${DB_PASS}
       - MYSQL_DATABASE=${DB_NAME}
-    networks:
-      - auto_net
 
   tribe:
     image: ghcr.io/tribe-framework/junction:latest
@@ -40,10 +38,11 @@ services:
       - ./custom:/var/www/custom
       - ./uploads:/var/www/uploads
       - ./config/phpmyadmin/config.inc.php:/var/www/phpmyadmin/config.inc.php
-    networks:
-      - auto_net
 
 networks:
-  auto_net:
-    external: true
-    name: ${COMPOSE_NETWORK_NAME}
+  default:
+    driver: bridge
+    name: ${JUNCTION_SLUG}_network
+    ipam:
+      config:
+        - subnet: ${DOCKER_SUBNET}
