@@ -1,5 +1,5 @@
-# Tribe's Docker template
-This is a skeleton project for using official *tribe* image.
+# Tribe
+This is the Docker dependent webapp for [Tribe](https://github.com/tribe-framework/tribe). Using this repository, you can quickly setup a selfhosted Tribe instance running within a Docker container.
 
 ![License](https://img.shields.io/github/license/tribe-framework/docker-tribe-template)
 
