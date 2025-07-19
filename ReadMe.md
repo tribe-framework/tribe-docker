@@ -1,5 +1,5 @@
-# Tribe
-This is the Docker dependent webapp for [Tribe](https://github.com/tribe-framework/tribe). Using this repository, you can quickly setup a selfhosted Tribe instance running within a Docker container.
+# Tribe - a web project management framework.
+This is the Docker version of [Tribe](https://github.com/tribe-framework/tribe). Using this repository, you can quickly setup a selfhosted secure Tribe instance running within a Docker container.
 
 ![License](https://img.shields.io/github/license/tribe-framework/docker-tribe-template)
 
